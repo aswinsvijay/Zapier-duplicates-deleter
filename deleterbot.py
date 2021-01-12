@@ -17,19 +17,13 @@ async def on_message(message : discord.Message):
     if message.author == client.user:           #if message is from this bot itself, ignore
         return
 
-    message.content = message.content.split()   #split the content by whitespaces
-
-    #finding the email from the message
-    for i in message.content:
-        if '@' in i:
-            mail = i
-            break
+    key = message.content.split('\n')[0]        #first line of the message content taken as the key
 
     #history() gives messages in reverse chronological order
     #flag is used to skip the first occurence(the latest message)
     flag = False
     async for i in message.channel.history():
-        if mail in i.content:                   #if mail is present in the message
+        if key == i.content.split('\n')[0]:     #if key match is found
             if not flag:                        #set flag to True the first time
                 flag = True
             else:                               #delete when found the next time
