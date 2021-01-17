@@ -26,7 +26,7 @@ async def on_message(message : discord.Message):
         return
 
     #command to reset RegEx setting
-    if message.content == "!unset-key":
+    if message.content == "!reset-key":
         await message.guild.me.edit(nick='deleterbot')
         await message.delete()                      #command deleted from channel to avoid unnecessary cluttering
         return
