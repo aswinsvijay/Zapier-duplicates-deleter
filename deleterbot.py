@@ -45,7 +45,7 @@ async def on_message(message : discord.Message):
         #history() gives messages in reverse chronological order
         #flag is used to skip the first occurence(the latest message)
         flag = False
-        async for i in message.channel.history():
+        async for i in message.channel.history(limit = None):
             if key in i.content.split('\n'):        #if key match is found
                 if not flag:                        #set flag to True the first time
                     flag = True
