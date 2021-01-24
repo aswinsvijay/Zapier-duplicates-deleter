@@ -21,20 +21,20 @@ async def on_message(message : discord.Message):
     #regular expression to search is stored in the bot's nickname
     #command to set RegEx for primary key
     if message.content.startswith("!set-key"):
-        await message.guild.me.edit(nick='deleterbot'+message.content[8:])
+        await message.guild.me.edit(nick=client.user.name + message.content[8:])
         await message.delete()                      #command deleted from channel to avoid unnecessary cluttering
         return
 
     #command to reset RegEx setting
     if message.content == "!reset-key":
-        await message.guild.me.edit(nick='deleterbot')
+        await message.guild.me.edit(nick=client.user.name)
         await message.delete()                      #command deleted from channel to avoid unnecessary cluttering
         return
 
-    if not message.guild.me.nick:                   #if nickname is a NoneType object
-        key = message.content.split('\n')[0]        #first line as primary key
+    if not message.guild.me.nick:                   #if nickname is a NoneType object(no nickname)
+        key = message.content.split('\n')[0]        #first line as primary key(default behaviour)
     else:
-        pattern = message.guild.me.nick[11:]        #extracting RegEx from nickname
+        pattern = message.guild.me.nick[len(client.user.name)+1:]        #extracting RegEx from nickname
         for i in message.content.split('\n'):       #split by lines
             key = re.search(pattern,i)              #searching for the pattern
             if key:                                 #if match found
