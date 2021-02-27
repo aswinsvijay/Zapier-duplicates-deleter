@@ -20,8 +20,7 @@ async def set_key(ctx):
     """
     message = ctx.message
     await message.guild.me.edit(nick=client.user.name + message.content[8:])
-    await message.delete()                      #command deleted from channel to avoid unnecessary cluttering
-    return
+    await message.channel.send('Changed regex. Bot\'s nickname has been changed accordingly.')
 
 @client.command()
 async def reset_key(ctx):
@@ -30,8 +29,7 @@ async def reset_key(ctx):
     """
     message = ctx.message
     await message.guild.me.edit(nick=client.user.name)
-    await message.delete()                      #command deleted from channel to avoid unnecessary cluttering
-    return
+    await message.channel.send('Reset regex setting. Bot\'s nickname has been cleared.')
 
 @client.event
 async def on_message(message : discord.Message):
