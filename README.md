@@ -7,3 +7,6 @@ By defaut, the bot uses the first line of the message as the primary key.
 This can be changed by sending ```!set_key <pattern>``` to the channel.  
 The pattern will be used as a regular expression to find the primary key.  
 To reset to default behaviour, use ```!reset_key```.  
+
+>Note: The commands !set_key and !reset_key require the user to have "Bot mod" role(case sensitive) in the discord server.  
+

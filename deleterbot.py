@@ -13,6 +13,7 @@ async def on_ready():
     print(f'{client.user.name} is ready.')
 
 @client.command()
+@discord.ext.commands.has_role('Bot mod')
 async def set_key(ctx):
     """
     To set RegEx for primary key
@@ -22,7 +23,13 @@ async def set_key(ctx):
     await message.guild.me.edit(nick=client.user.name + message.content[8:])
     await message.channel.send('Changed regex. Bot\'s nickname has been changed accordingly.')
 
+@set_key.error
+async def set_key_error(ctx,error):
+    if isinstance(error,discord.ext.commands.MissingRole):
+        await ctx.send('\"Bot mod\" role required for this command.')
+
 @client.command()
+@discord.ext.commands.has_role('Bot mod')
 async def reset_key(ctx):
     """
     To reset RegEx setting
@@ -30,6 +37,11 @@ async def reset_key(ctx):
     message = ctx.message
     await message.guild.me.edit(nick=client.user.name)
     await message.channel.send('Reset regex setting. Bot\'s nickname has been cleared.')
+
+@reset_key.error
+async def reset_key_error(ctx,error):
+    if isinstance(error,discord.ext.commands.MissingRole):
+        await ctx.send('\"Bot mod\" role required for this command.')
 
 @client.event
 async def on_message(message : discord.Message):
