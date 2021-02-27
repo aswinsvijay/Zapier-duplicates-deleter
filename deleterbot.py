@@ -1,33 +1,44 @@
 import discord
+import discord.ext.commands
 import os
 from dotenv import load_dotenv
 import re
 
 load_dotenv()
 TOKEN = os.getenv("DISCORD_TOKEN")
-client = discord.Client()
+client = discord.ext.commands.Bot('!')
 
 @client.event
 async def on_ready():
     print(f'{client.user.name} is ready.')
+
+@client.command()
+async def set_key(ctx):
+    """
+    To set RegEx for primary key
+    Usage: !set_key <regex>
+    """
+    message = ctx.message
+    await message.guild.me.edit(nick=client.user.name + message.content[8:])
+    await message.delete()                      #command deleted from channel to avoid unnecessary cluttering
+    return
+
+@client.command()
+async def reset_key(ctx):
+    """
+    To reset RegEx setting
+    """
+    message = ctx.message
+    await message.guild.me.edit(nick=client.user.name)
+    await message.delete()                      #command deleted from channel to avoid unnecessary cluttering
+    return
 
 @client.event
 async def on_message(message : discord.Message):
     if message.author == client.user:           #if message is from this bot itself, ignore
         return
 
-    #regular expression to search is stored in the bot's nickname
-    #command to set RegEx for primary key
-    if message.content.startswith("!set-key"):
-        await message.guild.me.edit(nick=client.user.name + message.content[8:])
-        await message.delete()                      #command deleted from channel to avoid unnecessary cluttering
-        return
-
-    #command to reset RegEx setting
-    if message.content == "!reset-key":
-        await message.guild.me.edit(nick=client.user.name)
-        await message.delete()                      #command deleted from channel to avoid unnecessary cluttering
-        return
+    await client.process_commands(message)
 
     if not message.guild.me.nick:                   #if nickname is a NoneType object(no nickname)
         key = message.content.split('\n')[0]        #first line as primary key(default behaviour)
